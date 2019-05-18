@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html lang='en'>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="lib/vue-2.4.0.js"></script>
+    <link rel="stylesheet" href="lib/bootstrap-3.3.7.css">
+</head>
+
+<body>
+    <div id="box">
+
+        <emt-box @func="loadComments"></emt-box>
+        <ul class="list-group">
+            <li class="list-group-item" v-for="item in list" :key="item.id">
+                <span class="badge">评论人:{{item.user}} </span>
+                {{item.content}}
+            </li>
+        </ul>
+    </div>
+
+    <template id="tmp1">
+        <div>
+            <div class="form-group">
+                <label for="">评论人:</label>
+                <input type="text" class="from-group" v-model='user'>
+            </div>
+
+            <div class="form-group">
+                <label for="">评论内容:</label>
+                <textarea class="form-group" v-model='content'></textarea>
+            </div>
+
+            <div class="form-group">
+                <input type="button" value="发表评论" class="btn btn-primary" @click="postCommit">
+            </div>
+        </div>
+    </template>
+
+    <script>
+        var commentBox = {
+            template: "#tmp1",
+            data() {
+                return {
+                    user: '',
+                    content: ''
+                }
+            },
+            methods: {
+                postCommit() { //发表评论的方法
+
+                    /*  分析业务逻辑
+                    1.评论数据存放到localStroge
+                    2.先组织出一个最新的评论数据对象
+                    3.把第二步中得到的评论的对象保存到localStroge中
+                        3.1：注意：localStroge只支持存放字符串数据 先调用Json.stringfy
+                        3.2：在保存最新的评论之前，要先从localStroge获取到之前的最新的评论数据，
+                        转换为一个数组对象，然后把最新的评论push到这个数组
+                        3.3：如果获取到的localStroge中的数据不存在，则可以返回一个 [ ],
+                            让json.parse去转换
+                        3.4：把最新的评论列表数组再次调用Json.stringfy转换数组字符串
+                            然后调用localStroge.setItem()
+                    */
+
+                    var comment = {
+                        id: Date.now(),
+                        user: this.user,
+                        content: this.content
+                    }
+                    var list = JSON.parse(localStorage.getItem('emts') || '[]')
+                    list.unshift(comment)
+                    localStorage.setItem('emts', JSON.stringify(list))
+                    this.user = this.content = ""
+                    // this.loadComments
+                    // 通过this.$emit来调用
+                    this.$emit('func')
+                }
+            }
+        }
+        var vue = new Vue({
+            el: '#box',
+            data: {
+                list: [{
+                        id: Date.now(),
+                        user: "李白",
+                        content: "天生我材必有用"
+                    },
+                    {
+                        id: Date.now(),
+                        user: "小马",
+                        content: "当我要走的时候"
+                    }
+                ]
+            },
+            created(){
+                this.loadComments()
+            },
+            methods: {
+                loadComments(){
+                    var list = JSON.parse(localStorage.getItem('emts') || '[]')
+                    this.list = list
+                }
+            },
+            components: {
+                'emt-box': commentBox
+            }
+        });
+    </script>
+</body>
+
+</html>

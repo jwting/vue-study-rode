@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="lib/vue-2.4.0.js"></script>
+</head>
+
+<body>
+    <div id="box">
+        <!-- 父组件可以在引用子组件的时候，通过属性绑定的形式  V-bind  
+        把需要传递给子组件的数据传递到他内部供子组件使用 -->
+        <com1 v-bind:parentmsg="msg"></com1>
+    </div>
+    <script>
+        var vue = new Vue({
+            el: '#box',
+            data: {
+                msg: "这是父组件身上的数据"
+            },
+            methods: {},
+            components: {
+                com1: {
+                    template: "<h3>这是子组件身上的数据------{{parentmsg}}</h3>",
+                    props:['parentmsg']
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html lang='en'>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="lib/vue-2.4.0.js"></script>
+</head>
+
+<body>
+    <div id="box">
+        <!-- 当我们自定义一个属性之后，子组件就能通过某些方式来调用传递进去的这个方法了 -->
+        <com2 @func="show"></com2>
+    </div>
+    <template id="tmp2">
+        <div>
+            <h2>这是子组件</h2>
+            <input type="button" value="这是子组件，点击它触发父组件传递过来的方法" @click="myfun">
+        </div>
+    </template>
+    <script>
+        //定义了一个字面量类型的  组件模板对象
+        var com2 = {
+            template: "#tmp2",
+            data() {
+                return {
+                    somemsg: {
+                        id: 1,
+                        name: "jwt"
+                    }
+
+                }
+            },
+            methods: {
+                myfun() {
+                    // 当点击子组件的按钮的时候，如何拿到父组件传递的fun方法并调用
+                    this.$emit("func",this.somemsg)
+                }
+            }
+        }
+        var vue = new Vue({
+            el: '#box',
+            data: {
+                msgFormSon:null
+            },
+            methods: {
+                show(data) {
+                    // console.log(data);
+                    this.msgFormSon=data
+                }
+            },
+            components: {
+                com2
+            }
+        });
+    </script>
+</body>
+
+</html>
