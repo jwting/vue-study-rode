@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="lib/vue-2.4.0.js"></script>
+    <link rel="stylesheet" href="lib/animate.css">
+    <style>
+
+        /* 第一种方式实现动画，自定义类名 */
+        /* v-enter :【这是一个时间点】，是进入之前元素的起始状态，此时还没开始进入 
+            v-leave-to【这是一个时间点】，是动画离开之后的终止状态，此时元素动画已经结束
+        */
+        /* .v-enter,
+        .v-leave-to {
+            opacity: 0;
+            transform: translateX(150px);
+        } */
+
+        /* v-enter-active :【入场动画时间段】
+            v-leave-active【离场动画时间段】
+        */
+        /* .v-enter-active,
+        .v-leave-active {
+            transition: all 0.4s ease;
+
+        } */
+
+        /* .v-enter-to,
+        .v-leave{
+            opacity: 1;
+        } */
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <input type="button" value="toggle" @click="flag=!flag">
+        <!-- 1.使用transition元素，把需要被动画控制的元素包裹起来
+             2.自定义两组样式来控制transition内部的元素实现动画
+        -->
+
+        <!-- 第二种方式，引入第三方库 -->
+        <transition 
+        enter-active-class="bounceIn" 
+        leave-active-class="bounceOut" 
+        :duration = "{enter:1000,leave:100}">
+            <h3 v-if="flag" class="animated">这是一个动画</h3>
+        </transition>
+    </div>
+    <script>
+        var vue = new Vue({
+            el: '#box',
+            data: {
+                flag: false
+            },
+            methods: {
+
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="lib/vue-2.4.0.js"></script>
+    <style>
+        /* v-enter :【这是一个时间点】，是进入之前元素的起始状态，此时还没开始进入 
+            v-leave-to【这是一个时间点】，是动画离开之后的终止状态，此时元素动画已经结束
+        */
+        .v-enter,
+        .v-leave-to{
+            opacity: 0;
+            transform: translateX(150px);
+        }
+        /* v-enter-active :【入场动画时间段】
+            v-leave-active【离场动画时间段】
+        */
+        .v-enter-active,
+        .v-leave-active{
+            transition: all 0.4s ease;
+            
+        }
+        /* .v-enter-to,
+        .v-leave{
+            opacity: 1;
+        } */
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <input type="button" value="toggle" @click="flag=!flag">
+        <!-- 1.使用transition元素，把需要被动画控制的元素包裹起来
+             2.自定义两组样式来控制transition内部的元素实现动画
+        -->
+        <transition name="" mode="">
+                <h3 v-if="flag">这是一个标题</h3>
+            </transition>
+    </div>
+    <script>
+        var vue = new Vue({
+            el: '#box',
+            data: {
+                flag: false
+            },
+            methods: {
+
+            }
+        });
+    </script>
+</body>
+
+</html>

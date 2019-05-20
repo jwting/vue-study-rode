@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>跑马灯</title>
+    <script src="lib/vue-2.4.0.js"></script>
+</head>
+
+<body>
+    <div id="box">
+        <input type="button" value="start" @click="str">
+        <input type="button" value="stop" @click="stp">
+        <h1>{{msg}}</h1>
+    </div>
+</body>
+<script>
+    // 在VM实例中，如果想要获取data上的数据，或者想要调用methods中的方法，必须通过_this.数据属性名  或者this.方法名来进行访问   这里的this就表示我们new出来的方法实例对象
+    var vm = new Vue({
+        el: "#box",
+        data: {
+            msg: "百邑大数据！猥琐发育，别浪~",
+            intervalId: null
+        },
+        methods: {
+            str() {
+
+                // 原生写法
+                // var _this = this
+                // setInterval(function() {
+                //     var start = _this.msg.substring(0, 1)
+                //     var end = _this.msg.substring(1)
+                //     _this.msg = end + start
+                // }, 100)
+
+                // es6写法，把function去掉，在小括号和花括号之间加 => 
+                // 此时this指向vm实例
+                if (this.intervalId != null) return;
+
+                this.intervalId = setInterval(() => {
+                    // 获取到头的第一个字符
+                    var start = this.msg.substring(0, 1)
+                        // 获取到后面的所有字符
+                    var end = this.msg.substring(1)
+                        // 重新拼接得到新的字符串，并赋值给this.msg
+                    this.msg = end + start
+
+                    // 注意：VM实例会监听自己身上data中所有数据的改变，只要数据一发生变化，就会自动把最新的数据，从data上同步到页面中去
+                    // 好处：减少程序员对DOM的操作，只需要关心数据，不需要重新
+                }, 400)
+
+                console.log(this.msg);
+            },
+            stp() {
+                clearInterval(this.intervalId)
+                this.intervalId = null;
+            }
+        }
+
+    })
+
+
+    // 分析:
+    //1.给按钮绑定事件  v-on
+    //2.在按钮的事件处理函数中，写相关的业务代码逻辑：
+    // 拿到msg字符串，然后调用字符串的substring来进行字符串的截取操作，把第一个字符串截取出来，放到最后一个位置
+    // 3.为了实现点击按钮自动截取的功能，需要把第二步的步骤放到一个定时器中去
+</script>
+
+</html>
