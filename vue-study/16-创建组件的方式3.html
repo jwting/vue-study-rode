@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html lang='en'>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>创建组件第二种的方式</title>
+    <script src="lib/vue-2.4.0.js"></script>
+</head>
+
+<body>
+    <div id="box">
+        <mycon2></mycon2>
+    </div>
+    <template id="app">
+        <div>
+            <h3>hhahahaha </h3>
+        </div>
+    </template>
+
+    <div id="box2">
+        <mycon2></mycon2>
+        <login></login>
+    </div>
+
+
+    <template id="app2">
+        <div>
+            <h1>这是一个私有的组件</h1>
+        </div>
+    </template>
+    <script>
+        //   ---------------------  方法二-----------------------
+        Vue.component('mycon2', {
+            //通过template属性，指定了组件要展示的html结构
+
+            //注意：无论是哪种方式创建的组件，组件的template属性指向的模板内容必须有且只有一个唯一的一个根元素
+            template: '#app'
+        })
+
+        var vue = new Vue({
+            el: '#box',
+            data: {},
+            methods: {}
+        });
+
+        var vue2 = new Vue({
+            el: '#box2',
+            data: {},
+            methods: {},
+            components: {
+                login: {
+                    template: '#app2'
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
